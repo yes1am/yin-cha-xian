@@ -1,0 +1,54 @@
+html {
+  height: 100%;
+}
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background: rgb(237,236,236);
+  border: 1px solid rgb(159, 161, 164);
+  height: 100%;
+}
+.app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#progress {
+  width: 220px;
+  height: 220px;
+  margin-top: 40px;
+}
+
+#time-container {
+  font-size: 18px;
+  margin-top: 20px;
+  height: 30px;
+}
+
+.text {
+  font-size: 14px;
+  color: #666;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 60px;
+}
+
+.buttons .button {
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  border: 0.5px solid #ddd;
+  line-height: 32px;
+  height: 32px;
+  width: 80px;
+  text-align: center;
+}
+
+.buttons .button:nth-child(1) {
+  margin-right: 20px;
+}

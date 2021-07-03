@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>饮茶先</title>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    <div class="app">
+      <div id="progress">
+      </div>
+      <div id="time-container"></div>
+      <div class="text">
+        工作结束后，休息 1 分钟
+      </div>
+      <div class="buttons">
+        <div class="button" id="reset">
+          重置
+        </div>
+        <div class="button" id="rest-now">
+          立刻休息
+        </div>
+      </div>
+    </div>
+    <!-- You can also require other files to run in this process -->
+    <!-- 加载 JS 文件 -->
+    <script src="./index.js"></script>
+  </body>
+</html>

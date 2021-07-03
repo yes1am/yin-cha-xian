@@ -1,0 +1,43 @@
+{
+  "name": "yin-cha-xian",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "electron-builder --mac"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yes1am/yin-cha-xian.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yes1am/yin-cha-xian/issues"
+  },
+  "homepage": "https://github.com/yes1am/yin-cha-xian#readme",
+  "devDependencies": {
+    "electron": "^13.1.4",
+    "electron-builder": "^22.11.7",
+    "eslint": "^7.30.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0"
+  },
+  "dependencies": {
+    "progressbar.js": "^1.1.0",
+    "timer.js": "^1.0.4"
+  },
+  "build": {
+    "productName": "饮茶先",
+    "appId": "Personal.YinChaXian.Startkit.1.0.0",
+    "mac": {
+      "icon": "app/assets/icon.icns",
+      "target": ["dmg"]
+    }
+  }
+}
