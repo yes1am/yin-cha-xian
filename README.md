@@ -1,6 +1,6 @@
 # 饮茶先
 
-一款 "提醒打工人定时休息" 的桌面软件
+一款 "提醒打工人定时休息" 的桌面软件, 基于 [Electron](https://github.com/electron/electron)
 
 软件名称来源于饮茶哥视频: https://www.bilibili.com/s/video/BV1Xh411v7LW
 
