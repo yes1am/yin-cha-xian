@@ -2,6 +2,7 @@
 
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, screen, ipcMain, Tray, nativeImage } = require('electron')
+const path = require('path')
 
 const {
   HOME_PAGE_PATH,
@@ -12,12 +13,16 @@ const {
   IPC_EVENTS
 } = require('./constant')
 
+let homePageWindow = null // 首页的 window 对象
+let restPageWindow = null
+
+// 将 tray 移动到外面, 方便被垃圾回收
+// https://github.com/electron/electron/issues/11572#issuecomment-539929156
+// https://code.iamhefang.cn/content/fix-electron-tray-icon-disappear.html
+let tray = null // 托盘对象
+
 class Main {
   constructor () {
-    this.homePageWindow = null // 首页的 window 对象
-    this.restPageWindow = null
-    this.tray = null // 托盘对象
-
     this.init()
   }
 
@@ -59,8 +64,8 @@ class Main {
   listenIPCEvents () {
     // 更新托盘文字
     ipcMain.handle(IPC_EVENTS.CHANGE_TRAY_TITLE, (_, timeStr) => {
-      if (this.tray && this.tray.setTitle) {
-        this.tray.setTitle(timeStr)
+      if (tray && tray.setTitle) {
+        tray.setTitle(timeStr)
       }
     })
     // 当 home page 倒计时结束时，打开 rest page
@@ -71,23 +76,23 @@ class Main {
     ipcMain.handle(IPC_EVENTS.REST_PAGE_TIME_END, () => {
       this.createWindow()
       // 向渲染进程发送事件
-      // this.homePageWindow.webContents.send(IPC_EVENTS.HOME_PAGE_START_WORK)
+      // homePageWindow.webContents.send(IPC_EVENTS.HOME_PAGE_START_WORK)
     })
   }
 
   destroyAllWindow () {
-    if (this.homePageWindow) {
-      this.homePageWindow.destroy()
+    if (homePageWindow) {
+      homePageWindow.destroy()
     }
-    if (this.restPageWindow) {
-      this.restPageWindow.destroy()
+    if (restPageWindow) {
+      restPageWindow.destroy()
     }
   }
 
   // 创建窗口
   createWindow () {
     this.destroyAllWindow()
-    this.homePageWindow = new BrowserWindow({
+    homePageWindow = new BrowserWindow({
       width: 360,
       height: 480,
       webPreferences: {
@@ -99,16 +104,16 @@ class Main {
       frame: false // 不显示关闭, 缩小等按钮
     })
     // 加载文件
-    this.homePageWindow.loadFile(HOME_PAGE_PATH)
+    homePageWindow.loadFile(HOME_PAGE_PATH)
     // 打开调试控制台
-    // this.homePageWindow.webContents.openDevTools()
+    // homePageWindow.webContents.openDevTools()
   }
 
   // 创建休息页窗口
   createRestWindow () {
     this.destroyAllWindow()
     const size = screen.getPrimaryDisplay().workAreaSize
-    this.restPageWindow = new BrowserWindow({
+    restPageWindow = new BrowserWindow({
       width: size.width,
       height: size.height,
       // 默认不显示窗口
@@ -120,26 +125,25 @@ class Main {
       frame: false // 不显示关闭, 缩小等按钮
     })
     // 加载文件
-    this.restPageWindow.loadFile(REST_PAGE_PATH)
+    restPageWindow.loadFile(REST_PAGE_PATH)
     // 打开调试控制台
-    // this.restPageWindow.webContents.openDevTools()
+    // restPageWindow.webContents.openDevTools()
   }
 
   // 创建托盘
   createTray () {
-    const icon = nativeImage.createFromPath(ICON_PATH)
-    this.tray = new Tray(icon)
-    this.tray.setTitle(DEFAULT_TRAY_TITLE)
-    this.tray.on('click', () => {
+    tray = new Tray(path.resolve(__dirname, './assets/icon.png'))
+    tray.setTitle(DEFAULT_TRAY_TITLE)
+    tray.on('click', () => {
       this.toggleHomePageWindowShow()
     })
   }
 
   // 切换 HomePageWindow 的显示和隐藏状态
   toggleHomePageWindowShow () {
-    if (!this.homePageWindow.isDestroyed()) {
-      if (this.homePageWindow.isVisible()) {
-        this.homePageWindow.hide()
+    if (!homePageWindow.isDestroyed()) {
+      if (homePageWindow.isVisible()) {
+        homePageWindow.hide()
       } else {
         this.showHomePageWindow()
       }
@@ -148,8 +152,8 @@ class Main {
 
   // 获取 window 应该放置的位置
   getWindowPosition () {
-    const windowBounds = this.homePageWindow.getBounds()
-    const trayBounds = this.tray.getBounds()
+    const windowBounds = homePageWindow.getBounds()
+    const trayBounds = tray.getBounds()
     // Center window horizontally below the tray icon
     const x = Math.round(trayBounds.x + (trayBounds.width / 2) - (windowBounds.width / 2))
     // Position window 4 pixels vertically below the tray icon
@@ -160,8 +164,8 @@ class Main {
   // 根据 tray 托盘的位置，在适当的位置展示 HomePage 的窗口
   showHomePageWindow () {
     const position = this.getWindowPosition()
-    this.homePageWindow.setPosition(position.x, position.y, false)
-    this.homePageWindow.show()
+    homePageWindow.setPosition(position.x, position.y, false)
+    homePageWindow.show()
   }
 }
 
