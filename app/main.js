@@ -1,13 +1,12 @@
 // 主进程文件，这个文件的名称需要和 package.json 中的 main 一致
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, screen, ipcMain, Tray, nativeImage } = require('electron')
+const { app, BrowserWindow, screen, ipcMain, Tray } = require('electron')
 const path = require('path')
 
 const {
   HOME_PAGE_PATH,
   REST_PAGE_PATH,
-  ICON_PATH,
   DEFAULT_TRAY_TITLE,
   MAC_OS_SYSTEM,
   IPC_EVENTS
@@ -16,7 +15,7 @@ const {
 let homePageWindow = null // 首页的 window 对象
 let restPageWindow = null
 
-// 将 tray 移动到外面, 方便被垃圾回收
+// 将 tray 移动到外面, 防止被垃圾回收
 // https://github.com/electron/electron/issues/11572#issuecomment-539929156
 // https://code.iamhefang.cn/content/fix-electron-tray-icon-disappear.html
 let tray = null // 托盘对象
