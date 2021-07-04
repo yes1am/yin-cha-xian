@@ -2,6 +2,8 @@
 
 一款基于 [Electron](https://github.com/electron/electron) 的，提醒"打工人"定时休息的桌面软件，每工作 25 分钟，休息 1 分钟。
 
+下载地址: https://github.com/yes1am/yin-cha-xian/releases/tag/1.0.0
+
 软件名称来源于饮茶哥视频: https://www.bilibili.com/s/video/BV1Xh411v7LW
 
 ## 1. 截图
